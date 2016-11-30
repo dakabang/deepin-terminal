@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #include <fontconfig/fontconfig.h>
 #include <fontconfig/fcfreetype.h>
@@ -30,7 +30,7 @@
 
 gchar** list_mono_or_dot_fonts(int* num) {
     FcInit();
-	
+
     FcPattern *pat = FcPatternCreate();
     if (!pat) {
         fprintf(stderr, "Create FcPattern Failed\n");
@@ -78,13 +78,13 @@ gchar** list_mono_or_dot_fonts(int* num) {
         /*       FcPatternFormat(fs->fonts[j], (FcChar8*)"%{spacing}"), */
         /*       FcPatternFormat(fs->fonts[j], (FcChar8*)"%{charset}") */
         /*       ); */
-        
+
         /* spacing 100 is mono font, spacing 110 is dot font */
-	    if (strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{spacing}"), "100") == 0 
-            || strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{spacing}"), "110") == 0
-            || strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{family}"), "YaHei Consolas Hybrid") == 0
-            || strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{family}"), "mononoki") == 0
-            ) {
+	    //if (strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{spacing}"), "100") == 0
+        //    || strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{spacing}"), "110") == 0
+        //    || strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{family}"), "YaHei Consolas Hybrid") == 0
+        //    || strcmp((char*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{family}"), "mononoki") == 0
+        //    ) {
 		    /* Realloc was realloc(fonts, 0), and you have to take space for <char *> */
 		    fonts = realloc(fonts, (count + 1) * sizeof(gchar*));
 			if (fonts == NULL) {
@@ -99,23 +99,23 @@ gchar** list_mono_or_dot_fonts(int* num) {
 				continue;
 			}
 			free(charset);
-		  
+
 			/* Got font name */
 			gchar* font = (gchar*) FcPatternFormat(fs->fonts[j], (FcChar8*)"%{family}");
-			
+
 			/* Need space for store font */
 			fonts[count] = malloc(strlen(font) + 1);
 			if (fonts[count] == NULL) {
 			    fprintf(stderr, "Malloc %d failed\n", count + 1);
 			    return NULL;
 			}
-			
+
 			strcpy(fonts[count], font);
-			
+
 			free(font);
-			
+
 			count++;
-		}
+		//}
 	}
 
 	/* Remove duplicate font family. */
@@ -132,9 +132,9 @@ gchar** list_mono_or_dot_fonts(int* num) {
 		}
     }
 	*num = count;
-	
+
 	FcFontSetDestroy(fs);
-	
+
 	return fonts;
 }
 
@@ -167,7 +167,7 @@ gchar* font_match(gchar* family) {
      FcPatternDestroy(font);
      FcFontSetDestroy(fs);
      FcPatternDestroy(match);
-	 
+
      if (!ret) {
          return NULL;
      }
@@ -178,13 +178,13 @@ gchar* font_match(gchar* family) {
 /* void main(int argc, char *argv[]) { */
 /*     int font_num = 0; */
 /*     char** fonts = list_mono_or_dot_fonts(&font_num); */
-	
+
 /* 	int i; */
 /* 	for (i = 0; i < font_num; i++) { */
 /* 	    printf("%s\n", fonts[i]); */
 /* 	} */
-	
+
 /* 	printf("\n"); */
 /* 	printf("%s", font_match("mono")); */
 /* } */
-  
+
